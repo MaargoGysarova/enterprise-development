@@ -15,25 +15,25 @@ public class Pharmacy
     /// <summary>
     /// Название аптеки
     /// </summary>
-    public string Name { get; set; } 
+    public required string Name { get; set; } 
     
     /// <summary>
     /// Номер телефона аптеки
     /// </summary>
-    public string PhoneNumber { get; set; } 
+    public string? PhoneNumber { get; set; } // Может быть null, если номер телефона отсутствует
     
     /// <summary>
     /// Адрес аптеки
     /// </summary>
-    public string Address { get; set; } 
+    public required string Address { get; set; } 
     
     /// <summary>
     /// ФИО директора аптеки
     /// </summary>
-    public string DirectorFullName { get; set; }
+    public string? DirectorFullName { get; set; } // Может быть null, если директор временно отсутствует
     
     /// <summary>
     /// Прайс-листы, связанные с аптекой
     /// </summary>
-    public ICollection<PriceList> PriceLists { get; set; } = new List<PriceList>();
+    public required ICollection<PriceList> PriceLists { get; set; } = new List<PriceList>(); // Обязательное свойство
 }

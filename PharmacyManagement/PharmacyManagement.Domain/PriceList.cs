@@ -20,7 +20,7 @@ public class PriceList
     /// <summary>
     /// Ссылка на аптеку
     /// </summary>
-    public Pharmacy Pharmacy { get; set; }
+    public required Pharmacy Pharmacy { get; set; }
 
     /// <summary>
     /// Идентификатор препарата
@@ -30,12 +30,12 @@ public class PriceList
     /// <summary>
     /// Ссылка на препарат
     /// </summary>
-    public Medicine Medicine { get; set; }
+    public required Medicine Medicine { get; set; }
 
     /// <summary>
     /// Изготовитель препарата
     /// </summary>
-    public string Manufacturer { get; set; }
+    public required string Manufacturer { get; set; }
 
     /// <summary>
     /// Условия оплаты (наличные/безналичные)
@@ -45,7 +45,7 @@ public class PriceList
     /// <summary>
     /// Реализующая фирма (поставщик)
     /// </summary>
-    public string Supplier { get; set; }
+    public string? Supplier { get; set; } // Поставщик может быть необязательным
 
     /// <summary>
     /// Стоимость препарата
