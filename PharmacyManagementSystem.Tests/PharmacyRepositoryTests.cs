@@ -20,6 +20,7 @@ namespace PharmacyManagementSystem.Tests
         {
             _repository = new PharmacyRepository();
             
+            // Аптека 1
             var pharmacy1 = new Pharmacy
             {
                 PharmacyId = 1,
@@ -45,12 +46,76 @@ namespace PharmacyManagementSystem.Tests
                         Supplier = "Завод1",
                         Price = 15.50m,
                         SaleDate = DateTime.Now,
-                        Pharmacy = null // Здесь не нужно инициализировать Pharmacy, так как PriceList будет использовать ссылку на существующую аптеку.
+                        Pharmacy = null
+                    }
+                }
+            };
+
+            // Аптека 2
+            var pharmacy2 = new Pharmacy
+            {
+                PharmacyId = 2,
+                Name = "Аптека Надежда",
+                PhoneNumber = "+7 987 654 3210",
+                Address = "ул. Пушкина, 10",
+                DirectorFullName = "Сидоров Сидор Сидорович",
+                PriceLists = new List<PriceList>
+                {
+                    new PriceList
+                    {
+                        PriceListId = 2,
+                        Medicine = new Medicine
+                        {
+                            MedicineId = 1,
+                            Name = "Аспирин",
+                            ProductGroup = ProductGroupType.Painkillers,
+                            PharmaceuticalGroups = new List<PharmaceuticalGroupType> { PharmaceuticalGroupType.GroupA },
+                            Quantity = 50
+                        },
+                        Manufacturer = "ФармацевтПлюс",
+                        PaymentConditions = PaymentConditionsType.Cash,
+                        Supplier = "Завод2",
+                        Price = 14.50m,
+                        SaleDate = DateTime.Now.AddDays(-5),
+                        Pharmacy = null
+                    }
+                }
+            };
+
+            // Аптека 3
+            var pharmacy3 = new Pharmacy
+            {
+                PharmacyId = 3,
+                Name = "Аптека Лекарь",
+                PhoneNumber = "+7 111 222 3333",
+                Address = "ул. Гагарина, 5",
+                DirectorFullName = "Петров Петр Петрович",
+                PriceLists = new List<PriceList>
+                {
+                    new PriceList
+                    {
+                        PriceListId = 3,
+                        Medicine = new Medicine
+                        {
+                            MedicineId = 1,
+                            Name = "Аспирин",
+                            ProductGroup = ProductGroupType.Painkillers,
+                            PharmaceuticalGroups = new List<PharmaceuticalGroupType> { PharmaceuticalGroupType.GroupA },
+                            Quantity = 200
+                        },
+                        Manufacturer = "ФармацевтПлюс",
+                        PaymentConditions = PaymentConditionsType.NonCash,
+                        Supplier = "Завод3",
+                        Price = 16.00m,
+                        SaleDate = DateTime.Now.AddDays(-10),
+                        Pharmacy = null
                     }
                 }
             };
 
             _repository.AddPharmacy(pharmacy1);
+            _repository.AddPharmacy(pharmacy2);
+            _repository.AddPharmacy(pharmacy3);
         }
 
         [Fact]
@@ -59,7 +124,7 @@ namespace PharmacyManagementSystem.Tests
             // Arrange
             var pharmacy = new Pharmacy
             {
-                PharmacyId = 2,
+                PharmacyId = 4,
                 Name = "Аптека Здоровье 2",
                 PhoneNumber = "+7 123 456 7891",
                 Address = "ул. Пушкина, 10",
@@ -72,7 +137,7 @@ namespace PharmacyManagementSystem.Tests
 
             // Assert
             var pharmacies = _repository.GetAllPharmacies();
-            Assert.Contains(pharmacies, p => p.PharmacyId == 2);
+            Assert.Contains(pharmacies, p => p.PharmacyId == 4);
         }
 
         [Fact]
@@ -118,7 +183,8 @@ namespace PharmacyManagementSystem.Tests
 
             // Assert
             Assert.NotEmpty(topPharmacies);
-            Assert.Equal(1, topPharmacies[0].Pharmacy.PharmacyId);
+            Assert.Equal(3, topPharmacies.Count); // Должно вернуть 3 аптеки
+            Assert.Equal(3, topPharmacies[0].Pharmacy.PharmacyId); // Аптека с наибольшим количеством продаж - Аптека Лекарь
         }
 
         [Fact]
@@ -140,7 +206,7 @@ namespace PharmacyManagementSystem.Tests
 
             // Assert
             Assert.NotEmpty(pharmacies);
-            Assert.Equal(1, pharmacies[0].PharmacyId);
+            Assert.Equal(2, pharmacies[0].PharmacyId); // Аптека Надежда с минимальной ценой 14.50
         }
     }
 }
