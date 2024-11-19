@@ -7,117 +7,24 @@ using PharmacyManagementSystem.Domain.Enums;
 namespace PharmacyManagementSystem.Tests
 {
     /// <summary>
-    /// Класс тестов для PharmacyRepository
+    /// Класс тестов для PharmacyRepository с использованием фикстуры данных
     /// </summary>
-    public class PharmacyRepositoryTests
+    public class PharmacyRepositoryTests : IClassFixture<PharmacyFixture>
     {
         private readonly PharmacyRepository _repository;
 
         /// <summary>
-        /// Инициализация тестов
+        /// Инициализация тестов с использованием PharmacyFixture
         /// </summary>
-        public PharmacyRepositoryTests()
+        /// <param name="fixture">Фикстура с данными аптек</param>
+        public PharmacyRepositoryTests(PharmacyFixture fixture)
         {
-            _repository = new PharmacyRepository();
-            
-            // Аптека 1
-            var pharmacy1 = new Pharmacy
-            {
-                PharmacyId = 1,
-                Name = "Аптека Здоровье",
-                PhoneNumber = "+7 123 456 7890",
-                Address = "ул. Ленина, 15",
-                DirectorFullName = "Иванов Иван Иванович",
-                PriceLists = new List<PriceList>
-                {
-                    new PriceList
-                    {
-                        PriceListId = 1,
-                        Medicine = new Medicine
-                        {
-                            MedicineId = 1,
-                            Name = "Аспирин",
-                            ProductGroup = ProductGroupType.Painkillers,
-                            PharmaceuticalGroups = new List<PharmaceuticalGroupType> { PharmaceuticalGroupType.GroupA },
-                            Quantity = 100
-                        },
-                        Manufacturer = "ФармацевтПлюс",
-                        PaymentConditions = PaymentConditionsType.Cash,
-                        Supplier = "Завод1",
-                        Price = 15.50m,
-                        SaleDate = DateTime.Now,
-                        Pharmacy = null
-                    }
-                }
-            };
-
-            // Аптека 2
-            var pharmacy2 = new Pharmacy
-            {
-                PharmacyId = 2,
-                Name = "Аптека Надежда",
-                PhoneNumber = "+7 987 654 3210",
-                Address = "ул. Пушкина, 10",
-                DirectorFullName = "Сидоров Сидор Сидорович",
-                PriceLists = new List<PriceList>
-                {
-                    new PriceList
-                    {
-                        PriceListId = 2,
-                        Medicine = new Medicine
-                        {
-                            MedicineId = 1,
-                            Name = "Аспирин",
-                            ProductGroup = ProductGroupType.Painkillers,
-                            PharmaceuticalGroups = new List<PharmaceuticalGroupType> { PharmaceuticalGroupType.GroupA },
-                            Quantity = 50
-                        },
-                        Manufacturer = "ФармацевтПлюс",
-                        PaymentConditions = PaymentConditionsType.Cash,
-                        Supplier = "Завод2",
-                        Price = 14.50m,
-                        SaleDate = DateTime.Now.AddDays(-5),
-                        Pharmacy = null
-                    }
-                }
-            };
-
-            // Аптека 3
-            var pharmacy3 = new Pharmacy
-            {
-                PharmacyId = 3,
-                Name = "Аптека Лекарь",
-                PhoneNumber = "+7 111 222 3333",
-                Address = "ул. Гагарина, 5",
-                DirectorFullName = "Петров Петр Петрович",
-                PriceLists = new List<PriceList>
-                {
-                    new PriceList
-                    {
-                        PriceListId = 3,
-                        Medicine = new Medicine
-                        {
-                            MedicineId = 1,
-                            Name = "Аспирин",
-                            ProductGroup = ProductGroupType.Painkillers,
-                            PharmaceuticalGroups = new List<PharmaceuticalGroupType> { PharmaceuticalGroupType.GroupA },
-                            Quantity = 200
-                        },
-                        Manufacturer = "ФармацевтПлюс",
-                        PaymentConditions = PaymentConditionsType.NonCash,
-                        Supplier = "Завод3",
-                        Price = 16.00m,
-                        SaleDate = DateTime.Now.AddDays(-10),
-                        Pharmacy = null
-                    }
-                }
-            };
-
-            _repository.AddPharmacy(pharmacy1);
-            _repository.AddPharmacy(pharmacy2);
-            _repository.AddPharmacy(pharmacy3);
+            _repository = fixture.Repository;
         }
 
+        /// <summary>
+        /// Тест для проверки добавления аптеки в репозиторий
+        /// </summary>
         [Fact]
         public void Test_AddPharmacy_ShouldAddPharmacy()
         {
@@ -129,7 +36,7 @@ namespace PharmacyManagementSystem.Tests
                 PhoneNumber = "+7 123 456 7891",
                 Address = "ул. Пушкина, 10",
                 DirectorFullName = "Петров Петр Петрович",
-                PriceLists = new List<PriceList>() // Добавление пустого списка PriceLists
+                PriceLists = new List<PriceList>() 
             };
 
             // Act
@@ -140,6 +47,9 @@ namespace PharmacyManagementSystem.Tests
             Assert.Contains(pharmacies, p => p.PharmacyId == 4);
         }
 
+        /// <summary>
+        /// Тест для получения всех препаратов в аптеке по заданному идентификатору аптеки
+        /// </summary>
         [Fact]
         public void Test_GetAllMedicinesInPharmacy_ShouldReturnMedicinesInPharmacy()
         {
@@ -151,6 +61,9 @@ namespace PharmacyManagementSystem.Tests
             Assert.Equal("Аспирин", medicines[0].Name);
         }
 
+        /// <summary>
+        /// Тест для получения всех аптек, содержащих указанный препарат, с информацией о количестве
+        /// </summary>
         [Fact]
         public void Test_GetPharmaciesWithMedicineInfo_ShouldReturnPharmaciesWithMedicine()
         {
@@ -163,6 +76,9 @@ namespace PharmacyManagementSystem.Tests
             Assert.Equal(100, pharmacies[0].Quantity);
         }
 
+        /// <summary>
+        /// Тест для получения средней стоимости препаратов по фармацевтической группе в каждой аптеке
+        /// </summary>
         [Fact]
         public void Test_GetAveragePriceByPharmaceuticalGroup_ShouldReturnCorrectAveragePrice()
         {
@@ -175,6 +91,9 @@ namespace PharmacyManagementSystem.Tests
             Assert.Equal(15.50m, result[0].AveragePrice);
         }
 
+        /// <summary>
+        /// Тест для получения топ-5 аптек по количеству и объему продаж заданного препарата за указанный период времени
+        /// </summary>
         [Fact]
         public void Test_GetTop5PharmaciesBySales_ShouldReturnTopPharmacies()
         {
@@ -183,10 +102,13 @@ namespace PharmacyManagementSystem.Tests
 
             // Assert
             Assert.NotEmpty(topPharmacies);
-            Assert.Equal(3, topPharmacies.Count); // Должно вернуть 3 аптеки
-            Assert.Equal(3, topPharmacies[0].Pharmacy.PharmacyId); // Аптека с наибольшим количеством продаж - Аптека Лекарь
+            Assert.Equal(3, topPharmacies.Count);
+            Assert.Equal(3, topPharmacies[0].Pharmacy.PharmacyId);
         }
 
+        /// <summary>
+        /// Тест для получения списка аптек в заданном регионе, которые продали больше определенного количества препарата
+        /// </summary>
         [Fact]
         public void Test_GetPharmaciesByRegionAndQuantity_ShouldReturnCorrectPharmacies()
         {
@@ -198,6 +120,9 @@ namespace PharmacyManagementSystem.Tests
             Assert.Equal(1, pharmacies[0].PharmacyId);
         }
 
+        /// <summary>
+        /// Тест для получения списка аптек, продающих указанный препарат по минимальной цене
+        /// </summary>
         [Fact]
         public void Test_GetPharmaciesWithMinimumPrice_ShouldReturnPharmaciesWithMinimumPrice()
         {
@@ -206,7 +131,7 @@ namespace PharmacyManagementSystem.Tests
 
             // Assert
             Assert.NotEmpty(pharmacies);
-            Assert.Equal(2, pharmacies[0].PharmacyId); // Аптека Надежда с минимальной ценой 14.50
+            Assert.Equal(2, pharmacies[0].PharmacyId); 
         }
     }
 }
