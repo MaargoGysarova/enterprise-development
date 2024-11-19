@@ -24,10 +24,15 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore PharmacyManagementSystem.Domain/PharmacyManagementSystem.Domain.csproj
-      
-    - name: Build project
+  
+    - name: Build dependencies
       run: dotnet build PharmacyManagementSystem.Domain/PharmacyManagementSystem.Domain.csproj --no-restore
-      
+  
+    - name: Restore test project
+      run: dotnet restore PharmacyManagementSystem.Tests/PharmacyManagementSystem.Tests.csproj
+  
+    - name: Build test project
+      run: dotnet build PharmacyManagementSystem.Tests/PharmacyManagementSystem.Tests.csproj --no-restore
+  
     - name: Run tests
       run: dotnet test PharmacyManagementSystem.Tests/PharmacyManagementSystem.Tests.csproj --no-restore --verbosity normal
-      
