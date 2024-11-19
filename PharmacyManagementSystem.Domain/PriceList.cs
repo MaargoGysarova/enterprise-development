@@ -1,6 +1,8 @@
-using PharmacyManagementSystem.Enums;
+using System.Collections.Generic;
+using PharmacyManagementSystem.Domain.Enums;
 
-namespace PharmacyManagementSystem;
+
+namespace PharmacyManagementSystem.Domain;
 
 /// <summary>
 /// Класс, представляющий запись в прайс-листе

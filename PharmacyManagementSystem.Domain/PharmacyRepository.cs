@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PharmacyManagementSystem;
+using PharmacyManagementSystem.Domain;
 
-namespace PharmacyManagementSystem
+namespace PharmacyManagementSystem.Domain
 {
     /// <summary>
     /// Класс, представляющий репозиторий аптек и предоставляющий методы для управления аптеками и препаратами.

@@ -1,4 +1,4 @@
-namespace PharmacyManagementSystem.Enums;
+namespace PharmacyManagementSystem.Domain.Enums;
 
     /// <summary>
     /// Перечисление для товарных групп препарата

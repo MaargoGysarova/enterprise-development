@@ -1,6 +1,5 @@
-using PharmacyManagementSystem.Enums;
-
-namespace PharmacyManagementSystem;
+using PharmacyManagementSystem.Domain.Enums;
+namespace PharmacyManagementSystem.Domain;
 
 /// <summary>
 /// Класс, представляющий аптеку

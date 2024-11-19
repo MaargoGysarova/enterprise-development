@@ -1,6 +1,6 @@
-using PharmacyManagementSystem.Enums;
+using PharmacyManagementSystem.Domain.Enums;
 
-namespace PharmacyManagementSystem;
+namespace PharmacyManagementSystem.Domain;
 
 /// <summary>
 /// Класс, представляющий препарат

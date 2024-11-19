@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Xunit;
-using PharmacyManagementSystem;
-using PharmacyManagementSystem.Enums;
+using PharmacyManagementSystem.Domain;
+using PharmacyManagementSystem.Domain.Enums;
 
 namespace PharmacyManagementSystem.Tests
 {
@@ -44,7 +44,8 @@ namespace PharmacyManagementSystem.Tests
                         PaymentConditions = PaymentConditionsType.Cash,
                         Supplier = "Завод1",
                         Price = 15.50m,
-                        SaleDate = DateTime.Now
+                        SaleDate = DateTime.Now,
+                        Pharmacy = null // Здесь не нужно инициализировать Pharmacy, так как PriceList будет использовать ссылку на существующую аптеку.
                     }
                 }
             };
@@ -62,7 +63,8 @@ namespace PharmacyManagementSystem.Tests
                 Name = "Аптека Здоровье 2",
                 PhoneNumber = "+7 123 456 7891",
                 Address = "ул. Пушкина, 10",
-                DirectorFullName = "Петров Петр Петрович"
+                DirectorFullName = "Петров Петр Петрович",
+                PriceLists = new List<PriceList>() // Добавление пустого списка PriceLists
             };
 
             // Act

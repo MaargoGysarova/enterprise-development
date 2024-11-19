@@ -1,8 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <IsPackable>false</IsPackable>
+    <LangVersion>latest</LangVersion> 
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PharmacyManagement.Domain/PharmacyManagement.Core.csproj" />
+    <ProjectReference Include="..\PharmacyManagementSystem.Domain\PharmacyManagementSystem.Domain.csproj" />
   </ItemGroup>
 
 </Project>
-
