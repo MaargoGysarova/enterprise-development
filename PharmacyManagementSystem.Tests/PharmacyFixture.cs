@@ -16,7 +16,7 @@ namespace PharmacyManagementSystem.Tests
         {
             Repository = new PharmacyRepository();
 
-            // Аптека 1
+            
             var pharmacy1 = new Pharmacy
             {
                 PharmacyId = 1,
@@ -47,7 +47,7 @@ namespace PharmacyManagementSystem.Tests
                 }
             };
 
-            // Аптека 2
+            
             var pharmacy2 = new Pharmacy
             {
                 PharmacyId = 2,
@@ -78,7 +78,7 @@ namespace PharmacyManagementSystem.Tests
                 }
             };
 
-            // Аптека 3
+            
             var pharmacy3 = new Pharmacy
             {
                 PharmacyId = 3,
