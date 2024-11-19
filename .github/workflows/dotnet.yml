@@ -23,10 +23,11 @@ jobs:
         dotnet-version: 8.0.x 
 
     - name: Restore dependencies
-      run: dotnet restore
-
+      run: dotnet restore PharmacyManagementSystem.Domain/PharmacyManagementSystem.Domain.csproj
+      
     - name: Build project
-      run: dotnet build --no-restore
-
+      run: dotnet build PharmacyManagementSystem.Domain/PharmacyManagementSystem.Domain.csproj --no-restore
+      
     - name: Run tests
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test PharmacyManagementSystem.Tests/PharmacyManagementSystem.Tests.csproj --no-restore --verbosity normal
+      
