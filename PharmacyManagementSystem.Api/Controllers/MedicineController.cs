@@ -11,14 +11,10 @@ namespace PharmacyManagementSystem.Api.Controllers
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-    public class MedicineController : ControllerBase
+    public class MedicineController(MedicineService medicineService) : ControllerBase
     {
-        private readonly MedicineService _medicineService;
+        private readonly MedicineService _medicineService = medicineService;
 
-        public MedicineController(MedicineService medicineService)
-        {
-            _medicineService = medicineService;
-        }
 
         /// <summary>
         /// Получить все препараты.

@@ -11,14 +11,10 @@ namespace PharmacyManagementSystem.Api.Controllers
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-    public class PriceListController : ControllerBase
+    public class PriceListController(PriceListService priceListService) : ControllerBase
     {
-        private readonly PriceListService _priceListService;
+        private readonly PriceListService _priceListService = priceListService;
 
-        public PriceListController(PriceListService priceListService)
-        {
-            _priceListService = priceListService;
-        }
 
         /// <summary>
         /// Получить все прайс-листы.
