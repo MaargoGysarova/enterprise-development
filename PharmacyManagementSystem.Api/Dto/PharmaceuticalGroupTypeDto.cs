@@ -1,5 +1,4 @@
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
     /// <summary>
     /// DTO для передачи фармацевтической группы препарата
     /// </summary>
@@ -8,6 +7,6 @@ namespace PharmacyManagementSystem.Api.Dto
         /// <summary>
         /// Строковое представление фармацевтической группы
         /// </summary>
-        public string Value { get; set; }
+        public required string Value { get; set; }
     }
-}
+

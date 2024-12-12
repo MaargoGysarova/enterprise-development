@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 
-namespace PharmacyManagementSystem.Api.Service
-{
+namespace PharmacyManagementSystem.Api.Service;
     /// <summary>
     /// Интерфейс для сервиса, предоставляющего операции CRUD.
     /// </summary>
@@ -32,4 +31,4 @@ namespace PharmacyManagementSystem.Api.Service
         /// </summary>
         bool Delete(int id);
     }
-}
+

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
+
     /// <summary>
     /// DTO для получения информации об аптеке
     /// </summary>
@@ -37,4 +37,4 @@ namespace PharmacyManagementSystem.Api.Dto
         /// </summary>
         public required List<string> PriceListNames { get; set; } = new List<string>();
     }
-}
+

@@ -40,9 +40,10 @@ builder.Services.AddSingleton<IRepository<Medicine>>(new IMedicineRepository(pha
 builder.Services.AddSingleton<IRepository<PriceList>>(new IPriceListRepository(pharmacyData.PriceLists));
 
 // Регистрация сервисов для работы с репозиториями
-builder.Services.AddScoped<PharmacyService>();
-builder.Services.AddScoped<MedicineService>();
-builder.Services.AddScoped<PriceListService>();
+builder.Services.AddScoped<IService<PharmacyGetDto, PharmacyPostDto>, PharmacyService>();
+builder.Services.AddScoped<IService<MedicineGetDto, MedicinePostDto>, MedicineService>();
+builder.Services.AddScoped<IService<PriceListGetDto, PriceListPostDto>, PriceListService>();
+
 
 // Регистрация AutoMapper для маппинга между сущностями и DTO
 builder.Services.AddAutoMapper(typeof(Mapping));

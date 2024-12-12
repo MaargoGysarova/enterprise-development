@@ -4,8 +4,7 @@ using PharmacyManagementSystem.Domain;
 using PharmacyManagementSystem.Domain.Repositories;
 using System.Collections.Generic;
 
-namespace PharmacyManagementSystem.Api.Service
-{
+namespace PharmacyManagementSystem.Api.Service;
     /// <summary>
     /// Сервис для работы с препаратами.
     /// Предоставляет методы для выполнения операций CRUD (создание, чтение, обновление, удаление) с препаратами.
@@ -76,4 +75,4 @@ namespace PharmacyManagementSystem.Api.Service
             return _medicineRepository.Delete(id);
         }
     }
-}
+

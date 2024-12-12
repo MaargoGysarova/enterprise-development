@@ -3,17 +3,18 @@ using PharmacyManagementSystem.Api.Dto;
 using PharmacyManagementSystem.Api.Service;
 using System.Collections.Generic;
 
-namespace PharmacyManagementSystem.Api.Controllers
-{
+namespace PharmacyManagementSystem.Api.Controllers;
     /// <summary>
     /// Контроллер для работы с аптеками.
     /// Предоставляет методы для получения, добавления, обновления и удаления аптек.
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-     public class PharmacyController(PharmacyService pharmacyService) : ControllerBase
+     public class PharmacyController(IService<PharmacyGetDto, PharmacyPostDto> pharmacyService) : ControllerBase
+
     {
-        private readonly PharmacyService _pharmacyService = pharmacyService;
+        private readonly IService<PharmacyGetDto, PharmacyPostDto> _pharmacyService = pharmacyService;
+
 
         /// <summary>
         /// Получить все аптеки.
@@ -77,4 +78,3 @@ namespace PharmacyManagementSystem.Api.Controllers
             return NoContent();
         }
     }
-}

@@ -1,10 +1,11 @@
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
     /// <summary>
     /// DTO для передачи товарной группы препарата
     /// </summary>
     public class ProductGroupTypeDto
     {
-        public string Value { get; set; }
+        /// <summary>
+        /// Название товарной группы препарата.
+        /// </summary>
+        public required string Value { get; set; }
     }
-}

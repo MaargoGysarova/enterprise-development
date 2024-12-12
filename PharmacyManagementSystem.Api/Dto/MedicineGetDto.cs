@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using PharmacyManagementSystem.Domain.Enums;
 
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
     /// <summary>
     /// DTO для получения информации о препарате
     /// </summary>
@@ -26,11 +25,10 @@ namespace PharmacyManagementSystem.Api.Dto
         /// <summary>
         /// Фармацевтические группы препарата
         /// </summary>
-        public List<PharmaceuticalGroupType> PharmaceuticalGroups { get; set; }
+        public required List<PharmaceuticalGroupType> PharmaceuticalGroups { get; set; }
 
         /// <summary>
         /// Количество штук препарата
         /// </summary>
         public required int Quantity { get; set; }
     }
-}

@@ -2,8 +2,7 @@ using PharmacyManagementSystem.Domain.Enums;
 using System.Collections.Generic;
 
 
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
     /// <summary>
     /// DTO для создания или обновления информации о препарате
     /// </summary>
@@ -29,4 +28,4 @@ namespace PharmacyManagementSystem.Api.Dto
         /// </summary>
         public required int Quantity { get; set; }
     }
-}
+

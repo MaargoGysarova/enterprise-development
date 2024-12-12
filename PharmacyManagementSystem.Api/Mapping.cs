@@ -4,8 +4,7 @@ using PharmacyManagementSystem.Domain;
 using PharmacyManagementSystem.Domain.Enums;
 using System.Collections.Generic;
 
-namespace PharmacyManagementSystem.Api
-{
+namespace PharmacyManagementSystem.Api;
     public class Mapping : Profile
     {
         public Mapping()
@@ -36,4 +35,3 @@ namespace PharmacyManagementSystem.Api
                 .ConvertUsing(p => new PaymentConditionsTypeDto { Value = p.ToString() });
         }
     }
-}

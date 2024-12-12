@@ -3,17 +3,16 @@ using PharmacyManagementSystem.Api.Dto;
 using PharmacyManagementSystem.Api.Service;
 using System.Collections.Generic;
 
-namespace PharmacyManagementSystem.Api.Controllers
-{
+namespace PharmacyManagementSystem.Api.Controllers;
     /// <summary>
     /// Контроллер для работы с прайс-листами.
     /// Предоставляет методы для получения, добавления, обновления и удаления прайс-листов.
     /// </summary>
     [Route("[controller]")]
     [ApiController]
-    public class PriceListController(PriceListService priceListService) : ControllerBase
+    public class PriceListController(IService<PriceListGetDto, PriceListPostDto> priceListService) : ControllerBase
     {
-        private readonly PriceListService _priceListService = priceListService;
+        private readonly IService<PriceListGetDto, PriceListPostDto> _priceListService = priceListService;
 
 
         /// <summary>
@@ -78,4 +77,3 @@ namespace PharmacyManagementSystem.Api.Controllers
             return NoContent();
         }
     }
-}

@@ -6,8 +6,7 @@ using System.Collections.Generic;
 
 
 
-namespace PharmacyManagementSystem.Api.Service
-{
+namespace PharmacyManagementSystem.Api.Service;
     /// <summary>
     /// Сервис для работы с прайс-листами.
     /// Предоставляет методы для выполнения операций CRUD (создание, чтение, обновление, удаление) с прайс-листами.
@@ -78,4 +77,3 @@ namespace PharmacyManagementSystem.Api.Service
             return _priceListRepository.Delete(id);
         }
     }
-}

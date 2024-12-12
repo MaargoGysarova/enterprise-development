@@ -1,5 +1,4 @@
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
     /// <summary>
     /// DTO для создания или обновления информации об аптеке
     /// </summary>
@@ -25,4 +24,4 @@ namespace PharmacyManagementSystem.Api.Dto
         /// </summary>
         public string? DirectorFullName { get; set; }
     }
-}
+

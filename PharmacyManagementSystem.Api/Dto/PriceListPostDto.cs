@@ -1,8 +1,8 @@
 using System;
 using PharmacyManagementSystem.Domain.Enums;
 
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
+
     /// <summary>
     /// DTO для создания или обновления записи в прайс-листе
     /// </summary>
@@ -43,4 +43,4 @@ namespace PharmacyManagementSystem.Api.Dto
         /// </summary>
         public required DateTime SaleDate { get; set; }
     }
-}
+

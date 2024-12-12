@@ -1,5 +1,4 @@
-namespace PharmacyManagementSystem.Api.Dto
-{
+namespace PharmacyManagementSystem.Api.Dto;
     /// <summary>
     /// DTO для представления типа условий оплаты
     /// </summary>
@@ -13,6 +12,6 @@ namespace PharmacyManagementSystem.Api.Dto
         /// <summary>
         /// Имя типа оплаты
         /// </summary>
-        public string Value { get; set; }
+        public required string Value { get; set; }
     }
-}
+

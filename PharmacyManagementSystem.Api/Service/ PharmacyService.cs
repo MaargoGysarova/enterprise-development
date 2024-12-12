@@ -4,8 +4,7 @@ using PharmacyManagementSystem.Api.Dto;
 using PharmacyManagementSystem.Domain;
 using PharmacyManagementSystem.Domain.Repositories;
 
-namespace PharmacyManagementSystem.Api.Service
-{
+namespace PharmacyManagementSystem.Api.Service;
     /// <summary>
     /// Сервис для работы с аптеками.
     /// Предоставляет методы для выполнения операций CRUD (создание, чтение, обновление, удаление) с аптеками.
@@ -76,4 +75,3 @@ namespace PharmacyManagementSystem.Api.Service
             return _pharmacyRepository.Delete(id);
         }
     }
-}
