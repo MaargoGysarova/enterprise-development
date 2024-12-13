@@ -73,8 +73,8 @@ namespace PharmacyManagementSystem.Api.Controllers;
             var success = _pharmacyService.Delete(id);
             if (!success)
             {
-                return NotFound();
+                 return NoContent();
             }
-            return NoContent();
+            return Ok("Object deleted successfully.");
         }
     }
