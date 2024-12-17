@@ -10,9 +10,18 @@ using PharmacyManagementSystem.Domain.Repositories;
 using System.IO;
 using System;
 using PharmacyManagementSystem.Api;
+using PharmacyManagementSystem.Domain.Data;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = builder.Configuration.GetConnectionString("MySQL");
+builder.Services.AddDbContext<PharmacyDbContext>(options =>
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 39))));
+
 
 // Изменение порта
 builder.WebHost.ConfigureKestrel(options =>
@@ -48,6 +57,8 @@ builder.Services.AddScoped<IService<PriceListGetDto, PriceListPostDto>, PriceLis
 // Регистрация AutoMapper для маппинга между сущностями и DTO
 builder.Services.AddAutoMapper(typeof(Mapping));
 
+
+
 // Создание и конфигурация приложения
 var app = builder.Build();
 
@@ -56,8 +67,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapGet("/", () => Results.Redirect("/swagger")); // Перенаправление на Swagger
 }
 
-app.MapGet("/", () => Results.Redirect("/swagger")); // Перенаправление на Swagger
 app.MapControllers();
 app.Run();
