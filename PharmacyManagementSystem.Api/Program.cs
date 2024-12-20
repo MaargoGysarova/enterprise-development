@@ -20,7 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
 builder.Services.AddDbContext<PharmacyDbContext>(options =>
-    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 39))));
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 39)),
+    b => b.MigrationsAssembly("PharmacyManagementSystem.Domain")));
 
 
 // Изменение порта
@@ -30,8 +31,8 @@ builder.WebHost.ConfigureKestrel(options =>
 });
 
 
-// Инициализация фиктивных данных или данных из внешнего источника
-var pharmacyData = new PharmacyManagementData();
+// // Инициализация фиктивных данных или данных из внешнего источника
+// var pharmacyData = new PharmacyManagementData();
 
 // Регистрация контроллеров
 builder.Services.AddControllers();
@@ -43,10 +44,11 @@ builder.Services.AddSwaggerGen(options =>
         options.IncludeXmlComments(xmlPath);
     });
 
-// Регистрация репозиториев с использованием данных (или с пустыми списками для тестирования)
-builder.Services.AddSingleton<IRepository<Pharmacy>>(new IPharmacyRepository(pharmacyData.Pharmacies));
-builder.Services.AddSingleton<IRepository<Medicine>>(new IMedicineRepository(pharmacyData.Medicines));
-builder.Services.AddSingleton<IRepository<PriceList>>(new IPriceListRepository(pharmacyData.PriceLists));
+
+// Регистрация репозиториев с использованием базы данных
+builder.Services.AddScoped<IRepository<Pharmacy>, IPharmacyRepository>();
+builder.Services.AddScoped<IRepository<Medicine>, IMedicineRepository>();
+builder.Services.AddScoped<IRepository<PriceList>, IPriceListRepository>();
 
 // Регистрация сервисов для работы с репозиториями
 builder.Services.AddScoped<IService<PharmacyGetDto, PharmacyPostDto>, PharmacyService>();

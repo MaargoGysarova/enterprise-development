@@ -1,3 +1,5 @@
+using PharmacyManagementSystem.Domain.Data;
+
 namespace PharmacyManagementSystem.Domain.Repositories
 {
     /// <summary>
@@ -6,23 +8,14 @@ namespace PharmacyManagementSystem.Domain.Repositories
     /// </summary>
     public class IPriceListRepository : IRepository<PriceList>
     {
-        private readonly List<PriceList> _priceLists;
+         private readonly PharmacyDbContext _context;
 
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория с пустым списком прайс-листов.
+        /// Инициализирует новый экземпляр репозитория с контекстом базы данных.
         /// </summary>
-        public IPriceListRepository()
+        public IPriceListRepository(PharmacyDbContext context)
         {
-            _priceLists = new List<PriceList>(); // Пустой список прайс-листов
-        }
-
-        /// <summary>
-        /// Инициализирует новый экземпляр репозитория с заданным списком прайс-листов.
-        /// </summary>
-        /// <param name="priceList">Список прайс-листов для инициализации репозитория</param>
-        public IPriceListRepository(List<PriceList> priceList)
-        {
-            _priceLists = priceList; // Инициализация репозитория переданным списком
+            _context = context;
         }
 
         /// <summary>
@@ -31,7 +24,7 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Перечень всех прайс-листов в репозитории</returns>
         public IEnumerable<PriceList> GetAll()
         {
-            return _priceLists;
+            return _context.PriceLists.ToList();
         }
 
         /// <summary>
@@ -41,7 +34,7 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Найдена ли запись. Если найдена, возвращает прайс-лист, иначе null</returns>
         public PriceList? GetById(int id)
         {
-            return _priceLists.FirstOrDefault(p => p.PriceListId == id);
+            return _context.PriceLists.Find(id);
         }
 
         /// <summary>
@@ -51,10 +44,9 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Возвращает ID нового прайс-листа</returns>
         public int Post(PriceList priceList)
         {
-            var newId = _priceLists.Count > 0 ? _priceLists.Max(p => p.PriceListId) + 1 : 1;
-            priceList.PriceListId = newId;
-            _priceLists.Add(priceList); // Добавляем новый прайс-лист в список
-            return newId;
+             _context.PriceLists.Add(priceList);
+            _context.SaveChanges();
+            return priceList.PriceListId;
         }
 
         /// <summary>
@@ -64,12 +56,17 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Возвращает true, если прайс-лист был успешно обновлен, иначе false</returns>
         public bool Put(PriceList priceList)
         {
-            var existingPriceList = GetById(priceList.PriceListId);
+            var existingPriceList = _context.PriceLists.Find(priceList.PriceListId);
             if (existingPriceList == null)
                 return false;
 
+            // Обновляем значения
             existingPriceList.Manufacturer = priceList.Manufacturer;
             existingPriceList.Price = priceList.Price;
+            existingPriceList.PharmacyId = priceList.PharmacyId;
+            existingPriceList.MedicineId = priceList.MedicineId;
+
+            _context.SaveChanges();
             return true;
         }
 
@@ -80,11 +77,12 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Возвращает true, если прайс-лист был успешно удален, иначе false</returns>
         public bool Delete(int id)
         {
-            var priceList = GetById(id);
+            var priceList = _context.PriceLists.Find(id);
             if (priceList == null)
                 return false;
 
-            _priceLists.Remove(priceList); // Удаляем прайс-лист из списка
+            _context.PriceLists.Remove(priceList);
+            _context.SaveChanges();
             return true;
         }
     }

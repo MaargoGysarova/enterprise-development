@@ -1,3 +1,5 @@
+using PharmacyManagementSystem.Domain.Data;
+
 namespace PharmacyManagementSystem.Domain.Repositories
 {
     /// <summary>
@@ -6,24 +8,17 @@ namespace PharmacyManagementSystem.Domain.Repositories
     /// </summary>
     public class IMedicineRepository : IRepository<Medicine>
     {
-        private readonly List<Medicine> _medicines;
+        private readonly PharmacyDbContext _context;
 
         /// <summary>
-        /// Инициализирует новый экземпляр репозитория с пустым списком лекарств.
+        /// Инициализирует новый экземпляр репозитория с контекстом базы данных.
         /// </summary>
-        public IMedicineRepository()
+        /// <param name="context">Контекст базы данных</param>
+        public IMedicineRepository(PharmacyDbContext context)
         {
-            _medicines = new List<Medicine>(); // Пустой список лекарств
+            _context = context;
         }
 
-        /// <summary>
-        /// Инициализирует новый экземпляр репозитория с заданным списком лекарств.
-        /// </summary>
-        /// <param name="medicineList">Список лекарств для инициализации репозитория</param>
-        public IMedicineRepository(List<Medicine> medicineList)
-        {
-            _medicines = medicineList; // Инициализация репозитория переданным списком
-        }
 
         /// <summary>
         /// Получает все лекарства из репозитория.
@@ -31,7 +26,7 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Перечень всех лекарств в репозитории</returns>
         public IEnumerable<Medicine> GetAll()
         {
-            return _medicines;
+            return _context.Medicines.ToList();
         }
 
         /// <summary>
@@ -41,7 +36,7 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Найдена ли запись. Если найдена, возвращает лекарство, иначе null</returns>
         public Medicine? GetById(int id)
         {
-            return _medicines.FirstOrDefault(m => m.MedicineId == id);
+            return _context.Medicines.Find(id);
         }
 
         /// <summary>
@@ -51,10 +46,9 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Возвращает ID нового лекарства</returns>
         public int Post(Medicine medicine)
         {
-            var newId = _medicines.Count > 0 ? _medicines.Max(m => m.MedicineId) + 1 : 1;
-            medicine.MedicineId = newId;
-            _medicines.Add(medicine); // Добавляем новое лекарство в список
-            return newId;
+            _context.Medicines.Add(medicine);
+            _context.SaveChanges();
+            return medicine.MedicineId; 
         }
 
         /// <summary>
@@ -64,13 +58,16 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Возвращает true, если лекарство было успешно обновлено, иначе false</returns>
         public bool Put(Medicine medicine)
         {
-            var existingMedicine = GetById(medicine.MedicineId);
+            var existingMedicine = _context.Medicines.Find(medicine.MedicineId);
             if (existingMedicine == null)
                 return false;
 
+            // Обновляем значения
             existingMedicine.Name = medicine.Name;
             existingMedicine.ProductGroup = medicine.ProductGroup;
             existingMedicine.Quantity = medicine.Quantity;
+
+            _context.SaveChanges();
             return true;
         }
 
@@ -81,11 +78,12 @@ namespace PharmacyManagementSystem.Domain.Repositories
         /// <returns>Возвращает true, если лекарство было успешно удалено, иначе false</returns>
         public bool Delete(int id)
         {
-            var medicine = GetById(id);
+            var medicine = _context.Medicines.Find(id);
             if (medicine == null)
                 return false;
 
-            _medicines.Remove(medicine); // Удаляем лекарство из списка
+            _context.Medicines.Remove(medicine);
+            _context.SaveChanges();
             return true;
         }
     }
