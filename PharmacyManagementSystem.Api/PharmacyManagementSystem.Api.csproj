@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <OutputType>Exe</OutputType> <!-- Указывает, что проект является исполняемым -->
     <Nullable>enable</Nullable> <!-- Включает проверку nullable -->
     <ImplicitUsings>enable</ImplicitUsings> <!-- Включает неявные директивы using -->
-     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-   
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

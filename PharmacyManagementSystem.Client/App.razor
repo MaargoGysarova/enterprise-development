@@ -1,35 +1,12 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <base href="/" />
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
-    <link rel="stylesheet" href="app.css" />
-    <link rel="stylesheet" href="PharmacyManagementSystem.Client.styles.css" />
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link href="_content/Blazorise/Blazorise.min.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Bootstrap5/Blazorise.Bootstrap5.min.css" rel="stylesheet" />
-    <link href="_content/Blazorise.Icons.FontAwesome/Blazorise.Icons.FontAwesome.min.css" rel="stylesheet" />
-    <HeadOutlet />
-</head>
-
-<body>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p role="alert">Sorry, there's nothing at this address.</p>
-            </LayoutView>
-        </NotFound>
-    </Router>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/Blazorise/Blazorise.min.js"></script>
-</body>
-
-</html>
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>

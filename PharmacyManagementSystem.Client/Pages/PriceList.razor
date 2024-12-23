@@ -1,47 +1,78 @@
 @page "/pricelists"
-@inject PharmacyApiClient ApiClient
-@inject NavigationManager Navigation
-
+@using PharmacyManagementSystem.Client.Api
+@inject Client ApiClient
 
 <h3>Price Lists</h3>
 
-@if (PriceLists == null)
+@if (isLoading)
 {
-    <p><em>Loading...</em></p>
+    <p>Loading...</p>
 }
 else
 {
     <table class="table">
         <thead>
             <tr>
-                <th>Pharmacy</th>
                 <th>Medicine</th>
+                <th>Pharmacy</th>
                 <th>Price</th>
-                <th>Manufacturer</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var priceList in PriceLists)
+            @foreach (var priceList in priceLists)
             {
                 <tr>
-                    <td>@priceList.PharmacyName</td>
                     <td>@priceList.MedicineName</td>
+                    <td>@priceList.PharmacyName</td>
                     <td>@priceList.Price</td>
-                    <td>@priceList.Manufacturer</td>
                     <td>
-                        <button class="btn btn-primary" @onclick="() => EditPriceList(priceList.Id)">Edit</button>
-                        <button class="btn btn-danger" @onclick="() => DeletePriceList(priceList.Id)">Delete</button>
+                        <button class="btn btn-warning btn-sm" @onclick="() => ShowEditForm(priceList)">Edit</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => DeletePriceList(priceList.PriceListId)">Delete</button>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    <button class="btn btn-success" @onclick="AddPriceList">Add New Price List</button>
+}
+
+<div class="mt-3">
+    <button class="btn btn-primary" @onclick="ShowAddForm">Add New Price List</button>
+</div>
+
+@if (isEditing || isAdding)
+{
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5>@(isEditing ? "Edit Price List" : "Add Price List")</h5>
+            <EditForm Model="@currentPriceList" OnValidSubmit="SavePriceList">
+                <DataAnnotationsValidator />
+                <div class="form-group">
+                    <label for="medicineId">Medicine</label>
+                    <InputNumber id="medicineId" class="form-control" @bind-Value="currentPriceList.MedicineId" />
+                </div>
+                <div class="form-group">
+                    <label for="pharmacyId">Pharmacy</label>
+                    <InputNumber id="pharmacyId" class="form-control" @bind-Value="currentPriceList.PharmacyId" />
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <InputNumber id="price" class="form-control" @bind-Value="currentPriceList.Price" />
+                </div>
+                <button type="submit" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-secondary" @onclick="CancelEdit">Cancel</button>
+            </EditForm>
+        </div>
+    </div>
 }
 
 @code {
-    private List<PriceListGetDto>? PriceLists;
+    private List<PriceListGetDto> priceLists = new();
+    private PriceListPostDto currentPriceList = new();
+    private bool isLoading = true;
+    private bool isEditing = false;
+    private bool isAdding = false;
+    private int? currentPriceListId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,34 +83,78 @@ else
     {
         try
         {
-            PriceLists = (await ApiClient.GetAllPriceListsAsync()).ToList();
+            isLoading = true;
+            priceLists = (await ApiClient.PriceListAllAsync()).ToList();
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void ShowAddForm()
+    {
+        currentPriceList = new PriceListPostDto();
+        currentPriceListId = null;
+        isAdding = true;
+        isEditing = false;
+    }
+
+    private void ShowEditForm(PriceListGetDto priceList)
+    {
+        currentPriceList = new PriceListPostDto
+        {
+            MedicineId = priceList.MedicineId,
+            PharmacyId = priceList.PharmacyId,
+            Price = priceList.Price
+        };
+        currentPriceListId = priceList.PriceListId;
+        isEditing = true;
+        isAdding = false;
+    }
+
+    private async Task SavePriceList()
+    {
+        try
+        {
+            if (isEditing && currentPriceListId.HasValue)
+            {
+                await ApiClient.PriceListPUTAsync(currentPriceListId.Value, currentPriceList);
+            }
+            else
+            {
+                await ApiClient.PriceListPOSTAsync(currentPriceList);
+            }
+
+            await LoadPriceLists();
+            CancelEdit();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error loading price lists: {ex.Message}");
+            // Handle error
+            Console.WriteLine(ex);
         }
-    }
-
-    private void AddPriceList()
-    {
-        Navigation.NavigateTo("/pricelists/create");
-    }
-
-    private void EditPriceList(int id)
-    {
-        Navigation.NavigateTo($"/pricelists/edit/{id}");
     }
 
     private async Task DeletePriceList(int id)
     {
         try
         {
-            await ApiClient.DeletePriceListAsync(id);
+            await ApiClient.PriceListDELETEAsync(id);
             await LoadPriceLists();
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error deleting price list: {ex.Message}");
+            // Handle error
+            Console.WriteLine(ex);
         }
+    }
+
+    private void CancelEdit()
+    {
+        currentPriceList = new PriceListPostDto();
+        currentPriceListId = null;
+        isEditing = false;
+        isAdding = false;
     }
 }
