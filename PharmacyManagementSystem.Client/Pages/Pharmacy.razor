@@ -193,7 +193,15 @@ else
             }
             else
             {
-                await ApiClient.PharmacyPOSTAsync(currentPharmacy);
+                try
+                {
+                    await ApiClient.PharmacyPOSTAsync(currentPharmacy);
+                }
+                catch (ApiException ex) when (ex.StatusCode == 201)
+                {
+                    // 201 Created is a success status, not an error
+                    // Continue with normal flow
+                }
             }
 
             await LoadPharmacies();

@@ -16,29 +16,32 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем CORS
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(builder =>
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader());
-});
-
+// Настройка подключения к базе данных
 var connectionString = builder.Configuration.GetConnectionString("MySQL");
 builder.Services.AddDbContext<PharmacyDbContext>(options =>
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 39)),
     b => b.MigrationsAssembly("PharmacyManagementSystem.Domain")));
 
+// Добавляем CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazor", policy =>
+    {
+        policy.WithOrigins("http://localhost:5295")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Изменение порта
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5002); // Задаем новый порт 5001
+    options.ListenLocalhost(5001); // Задаем порт 5001
 });
 
-// Регистрация контроллеров
+// Регистрация контроллеров и Swagger
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer(); 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -46,26 +49,26 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(xmlPath);
 });
 
-// Регистрация репозиториев с использованием базы данных
+// Регистрация репозиториев
 builder.Services.AddScoped<IRepository<Pharmacy>, IPharmacyRepository>();
 builder.Services.AddScoped<IRepository<Medicine>, IMedicineRepository>();
 builder.Services.AddScoped<IRepository<PriceList>, IPriceListRepository>();
 
-// Регистрация сервисов для работы с репозиториями
+// Регистрация сервисов
 builder.Services.AddScoped<IService<PharmacyGetDto, PharmacyPostDto>, PharmacyService>();
 builder.Services.AddScoped<IService<MedicineGetDto, MedicinePostDto>, MedicineService>();
 builder.Services.AddScoped<IService<PriceListGetDto, PriceListPostDto>, PriceListService>();
 
-// Регистрация AutoMapper для маппинга между сущностями и DTO
+// Настройка AutoMapper
 builder.Services.AddAutoMapper(typeof(Mapping));
 
 // Создание и конфигурация приложения
 var app = builder.Build();
 
-// Включаем CORS
-app.UseCors();
+// Подключение CORS
+app.UseCors("AllowBlazor");
 
-// Включаем Swagger только в режиме разработки
+// Включение Swagger только в режиме разработки
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -73,5 +76,9 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/", () => Results.Redirect("/swagger")); // Перенаправление на Swagger
 }
 
+// Включение маршрутизации контроллеров
+app.UseRouting();
+app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
