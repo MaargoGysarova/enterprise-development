@@ -1,0 +1,33 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Home</a>
+    </div>
+</div>
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="pharmacies">
+                <span class="bi" aria-hidden="true"></span> Pharmacies
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="medicines">
+                <span class="bi" aria-hidden="true"></span> Medicines
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="pricelists">
+                <span class="bi" aria-hidden="true"></span> Price Lists
+            </NavLink>
+        </div>
+    </nav>
+</div>

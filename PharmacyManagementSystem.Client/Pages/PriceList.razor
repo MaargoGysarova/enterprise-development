@@ -1,0 +1,85 @@
+@page "/pricelists"
+@inject PharmacyApiClient ApiClient
+@inject NavigationManager Navigation
+
+
+<h3>Price Lists</h3>
+
+@if (PriceLists == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Pharmacy</th>
+                <th>Medicine</th>
+                <th>Price</th>
+                <th>Manufacturer</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var priceList in PriceLists)
+            {
+                <tr>
+                    <td>@priceList.PharmacyName</td>
+                    <td>@priceList.MedicineName</td>
+                    <td>@priceList.Price</td>
+                    <td>@priceList.Manufacturer</td>
+                    <td>
+                        <button class="btn btn-primary" @onclick="() => EditPriceList(priceList.Id)">Edit</button>
+                        <button class="btn btn-danger" @onclick="() => DeletePriceList(priceList.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-success" @onclick="AddPriceList">Add New Price List</button>
+}
+
+@code {
+    private List<PriceListGetDto>? PriceLists;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPriceLists();
+    }
+
+    private async Task LoadPriceLists()
+    {
+        try
+        {
+            PriceLists = (await ApiClient.GetAllPriceListsAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading price lists: {ex.Message}");
+        }
+    }
+
+    private void AddPriceList()
+    {
+        Navigation.NavigateTo("/pricelists/create");
+    }
+
+    private void EditPriceList(int id)
+    {
+        Navigation.NavigateTo($"/pricelists/edit/{id}");
+    }
+
+    private async Task DeletePriceList(int id)
+    {
+        try
+        {
+            await ApiClient.DeletePriceListAsync(id);
+            await LoadPriceLists();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting price list: {ex.Message}");
+        }
+    }
+}

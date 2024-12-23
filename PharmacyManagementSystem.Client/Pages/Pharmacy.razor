@@ -1,0 +1,163 @@
+@page "/pharmacies"
+@using MudBlazor
+@inject PharmacyApiClient ApiClient
+
+
+
+<PageTitle>Pharmacies</PageTitle>
+
+<h1>Pharmacy Management</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone Number</th>
+        <th>Director</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (_pharmacies == null || !_pharmacies.Any())
+    {
+        <tr>
+            <td colspan="6" class="text-center">No pharmacies found.</td>
+        </tr>
+    }
+    else
+    {
+        @foreach (var pharmacy in _pharmacies)
+        {
+            <tr>
+                <td>@pharmacy.Id</td>
+                <td>@pharmacy.Name</td>
+                <td>@pharmacy.Address</td>
+                <td>@pharmacy.PhoneNumber</td>
+                <td>@pharmacy.DirectorFullName</td>
+                <td>
+                    <button class="btn btn-primary" @onclick="@(() => ShowUpdForm(pharmacy.Id))">Edit</button>
+                    <button class="btn btn-danger" @onclick="@(() => DeletePharmacy(pharmacy.Id))">Delete</button>
+                </td>
+            </tr>
+        }
+    }
+    </tbody>
+</table>
+
+<h3>@(flagAdd ? "Add New Pharmacy" : "Edit Pharmacy")</h3>
+
+<EditForm Model="@currentPharmacy" OnValidSubmit=@HandleFormSubmit>
+    <DataAnnotationsValidator/>
+    <div class="mb-3">
+        <label for="name" class="form-label">Name</label>
+        <InputText id="name" class="form-control" @bind-Value="currentPharmacy.Name"/>
+    </div>
+    <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <InputText id="address" class="form-control" @bind-Value="currentPharmacy.Address"/>
+    </div>
+    <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <InputText id="phoneNumber" class="form-control" @bind-Value="currentPharmacy.PhoneNumber"/>
+    </div>
+    <div class="mb-3">
+        <label for="director" class="form-label">Director Full Name</label>
+        <InputText id="director" class="form-control" @bind-Value="currentPharmacy.DirectorFullName"/>
+    </div>
+    <button type="submit" class="btn btn-success">Save</button>
+    <button type="button" class="btn btn-secondary" @onclick="ClearForm">Cancel</button>
+</EditForm>
+
+@code {
+    private List<PharmacyDto> _pharmacies = new();
+    private PharmacyDto currentPharmacy = new() { Name = "", Address = "", PhoneNumber = "", DirectorFullName = "" };
+    private bool flagAdd = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPharmacies();
+    }
+
+    private async Task LoadPharmacies()
+    {
+        try
+        {
+            _pharmacies = (await ApiClient.GetAllPharmaciesAsync()).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading pharmacies: {ex.Message}");
+        }
+    }
+
+    private async Task AddNewPharmacy()
+    {
+        try
+        {
+            await ApiClient.CreatePharmacyAsync(currentPharmacy);
+            ClearForm();
+            await LoadPharmacies();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error adding pharmacy: {ex.Message}");
+        }
+    }
+
+    private async Task DeletePharmacy(int pharmacyId)
+    {
+        try
+        {
+            await ApiClient.DeletePharmacyAsync(pharmacyId);
+            await LoadPharmacies();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error deleting pharmacy: {ex.Message}");
+        }
+    }
+
+    private async Task UpdatePharmacy()
+    {
+        try
+        {
+            await ApiClient.UpdatePharmacyAsync(currentPharmacy.Id, currentPharmacy);
+            ClearForm();
+            await LoadPharmacies();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error updating pharmacy: {ex.Message}");
+        }
+    }
+
+    private async Task ShowUpdForm(int pharmacyId)
+    {
+        flagAdd = false;
+        var response = await ApiClient.GetPharmacyByIdAsync(pharmacyId);
+        if (response != null)
+        {
+            currentPharmacy = response;
+        }
+    }
+
+    private void ClearForm()
+    {
+        flagAdd = true;
+        currentPharmacy = new PharmacyDto() { Name = "", Address = "", PhoneNumber = "", DirectorFullName = "" };
+    }
+
+    private async Task HandleFormSubmit()
+    {
+        if (flagAdd)
+        {
+            await AddNewPharmacy();
+        }
+        else
+        {
+            await UpdatePharmacy();
+        }
+    }
+}

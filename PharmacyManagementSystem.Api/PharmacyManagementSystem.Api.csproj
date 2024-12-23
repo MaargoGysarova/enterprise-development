@@ -11,7 +11,11 @@
 
   <ItemGroup>
     <!-- Ссылки на другие проекты -->
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+    <PackageReference Include="NSwag.Core" Version="14.2.0" />
     <ProjectReference Include="..\PharmacyManagementSystem.Domain\PharmacyManagementSystem.Domain.csproj" />
+    <ProjectReference Include="..\PharmacyManagementSystem.Shared\PharmacyManagementSystem.Shared.csproj" />
+    
 
     <!-- Зависимости -->
     <PackageReference Include="AutoMapper" Version="12.0.1" />

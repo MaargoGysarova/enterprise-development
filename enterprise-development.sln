@@ -8,6 +8,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PharmacyManagementSystem.Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyManagementSystem.Api", "PharmacyManagementSystem.Api\PharmacyManagementSystem.Api.csproj", "{358C1D91-88D7-4870-AD7B-9768AC0CFE70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PharmacyManagementSystem.Shared", "PharmacyManagementSystem.Shared\PharmacyManagementSystem.Shared.csproj", "{D40C0A4D-F849-4BAF-AF74-0C6C54632A84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,6 +28,10 @@ Global
 		{358C1D91-88D7-4870-AD7B-9768AC0CFE70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{358C1D91-88D7-4870-AD7B-9768AC0CFE70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{358C1D91-88D7-4870-AD7B-9768AC0CFE70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D40C0A4D-F849-4BAF-AF74-0C6C54632A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D40C0A4D-F849-4BAF-AF74-0C6C54632A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D40C0A4D-F849-4BAF-AF74-0C6C54632A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D40C0A4D-F849-4BAF-AF74-0C6C54632A84}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

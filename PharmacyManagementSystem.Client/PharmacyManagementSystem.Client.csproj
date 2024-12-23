@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Api\sw.json" />
+  </ItemGroup>
+
+
+  <!-- Обновленные зависимости -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.8" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="MudBlazor" Version="7.15.0" />
+    <PackageReference Include="MudBlazor.FontIcons.MaterialSymbols" Version="1.2.0" />
+    <PackageReference Include="Blazorise" Version="1.7.1" />
+    <PackageReference Include="Blazorise.Bootstrap5" Version="1.7.1" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.7.1" />
+
+    <Compile Include="Api\PharmacyApiClient.cs" />
+  </ItemGroup>
+
+</Project>
