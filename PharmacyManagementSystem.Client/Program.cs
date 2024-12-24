@@ -10,11 +10,6 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Регистрация Blazorise с Bootstrap5 и FontAwesome
-builder.Services.AddBlazorise(options => { options.Immediate = true; })
-                .AddBootstrap5Providers()
-                .AddFontAwesomeIcons();
-
 // Настройка HttpClient
 builder.Services.AddScoped(sp => new HttpClient
 {
