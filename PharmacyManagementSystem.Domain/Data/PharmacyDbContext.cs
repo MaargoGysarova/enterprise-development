@@ -54,9 +54,3 @@ public class PharmacyDbContext : DbContext
     }
 }
 
-
-// Отношение "один ко многим" в EF Core реализуется через:
-
-// Свойства навигации (ICollection<T> на стороне "многих" и ссылка на объект на стороне "одного").
-// Внешний ключ (PharmacyId в PriceList).
-// Настройку связи с помощью Fluent API (HasOne, WithMany).
